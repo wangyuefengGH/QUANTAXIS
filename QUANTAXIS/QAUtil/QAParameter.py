@@ -61,11 +61,11 @@ class ORDER_MODEL():
     @yutiansut/2017-12-18
     """
 
-    LIMIT = 'limit'  # 限价
-    MARKET = 'market'  # 市价/在回测里是下个bar的开盘价买入/实盘就是五档剩余最优成交价
-    CLOSE = 'close'  # 当前bar的收盘价买入
-    NEXT_OPEN = 'next_open'  # 下个bar的开盘价买入
-    STRICT = 'strict'  # 严格模式/不推荐(仅限回测测试用)
+    LIMIT = 'LIMIT'  # 限价
+    MARKET = 'MARKET'  # 市价/在回测里是下个bar的开盘价买入/实盘就是五档剩余最优成交价
+    CLOSE = 'CLOSE'  # 当前bar的收盘价买入
+    NEXT_OPEN = 'NEXT_OPEN'  # 下个bar的开盘价买入
+    STRICT = 'STRICT'  # 严格模式/不推荐(仅限回测测试用)
 
 
 class ORDER_STATUS():
@@ -113,12 +113,14 @@ class RUNNING_ENVIRONMENT():
 
     回测
     模拟
+    t0
     实盘
     随机(按算法/分布随机生成行情)/仅用于训练测试
     """
 
     BACKETEST = 'backtest'
     SIMULATION = 'simulation'
+    TZERO = 't0'
     REAL = 'real'
     RANODM = 'random'
 
@@ -139,7 +141,18 @@ class TRADE_STATUS():
 
 
 class MARKET_ERROR():
-    ACCOUNT_EXIST = 'Account has already exist'
+    """市场类的错误
+
+    1. 账户以及存在(不能重复注册)
+    2. 网络中断
+    3. 数据库连接丢失
+    4. 数值/索引不存在
+    """
+
+    ACCOUNT_EXIST = 'ACCOUNT EXIST {}'
+    NETWORK_BROKERN = 'NETWORK BROKEN {}'
+    DATABSECONNECT_LOST = 'DATABASECONNECTION LOST {}'
+    VALUE_NOT_FOUND = 'VALUE_NOT_FOUND'
 
 
 class MARKET_TYPE():

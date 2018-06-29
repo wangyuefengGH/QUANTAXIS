@@ -174,14 +174,16 @@ class QA_BacktestBroker(QA_Broker):
 
         """
         order = event.order
-
         if 'market_data' in event.__dict__.keys():
+            
             self.market_data = self.get_market(
                 order) if event.market_data is None else event.market_data
             if isinstance(self.market_data,dict):
                 pass
             elif isinstance(self.market_data,pd.DataFrame):
                 self.market_data=QA_util_to_json_from_pandas(self.market_data)[0]
+            elif isinstance(self.market_data,pd.core.series.Series):
+                self.market_data=self.market_data.to_dict()
             else:
                 self.market_data=self.market_data.to_json()[0]
         else:
@@ -218,11 +220,7 @@ class QA_BacktestBroker(QA_Broker):
                 order.datetime = '{} 09:30:00'.format(order.date)
             elif order.frequence in [FREQUENCE.ONE_MIN, FREQUENCE.FIVE_MIN, FREQUENCE.FIFTEEN_MIN, FREQUENCE.THIRTY_MIN, FREQUENCE.SIXTY_MIN]:
 
-                exact_time = str(datetime.datetime.strptime(
-                    str(order.datetime), '%Y-%m-%d %H:%M:%S') + datetime.timedelta(minutes=1))
-                order.date = exact_time[0:10]
-                order.datetime = exact_time
-
+                order.date = str(order.datetime)[0:10]
             #_original_marketvalue = order.price*order.amount
 
             order.price = (float(self.market_data.get('high')) +
@@ -266,10 +264,7 @@ class QA_BacktestBroker(QA_Broker):
                 order.datetime = '{} 09:30:00'.format(order.date)
             elif order.frequence in [FREQUENCE.ONE_MIN, FREQUENCE.FIVE_MIN, FREQUENCE.FIFTEEN_MIN, FREQUENCE.THIRTY_MIN, FREQUENCE.SIXTY_MIN]:
 
-                exact_time = str(datetime.datetime.strptime(
-                    str(order.datetime), '%Y-%m-%d %H:%M:%S') + datetime.timedelta(minutes=1))
-                order.date = exact_time[0:10]
-                order.datetime = exact_time
+                order.date = str(order.datetime)[0:10]
         elif order.order_model == ORDER_MODEL.STRICT:
             """
             严格模式
@@ -282,10 +277,7 @@ class QA_BacktestBroker(QA_Broker):
                 order.datetime = '{} 09:30:00'.format(order.date)
             elif order.frequence in [FREQUENCE.ONE_MIN, FREQUENCE.FIVE_MIN, FREQUENCE.FIFTEEN_MIN, FREQUENCE.THIRTY_MIN, FREQUENCE.SIXTY_MIN]:
 
-                exact_time = str(datetime.datetime.strptime(
-                    str(order.datetime), '%Y-%m-%d %H:%M:%S') + datetime.timedelta(minutes=1))
-                order.date = exact_time[0:10]
-                order.datetime = exact_time
+                order.date = str(order.datetime)[0:10]
 
             if order.towards == 1:
                 order.price = float(self.market_data.get('high'))
@@ -331,9 +323,8 @@ class QA_BacktestBroker(QA_Broker):
         """
 
         # 首先判断是否在_quotation里面
-
-        if (order.datetime, order.code) in self._quotation.keys():
-            return self._quotation[(QA_util_to_datetime(order.datetime), order.code)]
+        if (pd.Timestamp(order.datetime), order.code) in self._quotation.keys():
+            return self._quotation[(pd.Timestamp(order.datetime), order.code)]
 
         else:
             try:

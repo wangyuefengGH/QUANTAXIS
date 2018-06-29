@@ -3,7 +3,21 @@
 <!-- TOC -->
 
 - [QUANTAXIS 更新纪要](#quantaxis-更新纪要)
-    - [1.0.46 (unreleased)](#1046-unreleased)
+    - [1.0.60 (unreleased)](#1060-unreleased)
+    - [1.0.59](#1059)
+    - [1.0.58](#1058)
+    - [1.0.57](#1057)
+    - [1.0.56](#1056)
+    - [1.0.55](#1055)
+    - [1.0.54](#1054)
+    - [1.0.53](#1053)
+    - [1.0.52](#1052)
+    - [1.0.51](#1051)
+    - [1.0.50](#1050)
+    - [1.0.49](#1049)
+    - [1.0.48](#1048)
+    - [1.0.47](#1047)
+    - [1.0.46](#1046)
     - [1.0.45](#1045)
     - [1.0.44](#1044)
     - [1.0.43](#1043)
@@ -27,15 +41,201 @@
     - [1.0.25](#1025)
 
 <!-- /TOC -->
+## 1.0.60 (unreleased)
+
+1. groupy 默认参数中 sort设置为false
+2. 加速指标运算/前后复权 (视股票数量而定,3000多只股票提速20倍)
+3. 回测加速(test_backtest/MACD_JCSC.py) 从14秒提速到2秒
+4. QA_Risk 增加
+
+> max_holdmarketvalue 最大持仓市值,min_holdmarketvalue 最小持仓市值, average_holdmarketvalue 平均持仓市值
+> max_cashhold 最大闲置现金, min_cashhold 最小持仓现金, average_cashhold 平均持仓现金
+
+5. QA_Performance 增加:
+
+> win_rate(methods='FIFO') 胜率
+> average_profit(methods='FIFO') 平均利润
+
+6. 增加QA_Trade模块,QATrade_Realtime类(未完成)
+
+7. 支持 期权数据/ 港股数据获取/ 部分美股数据/ 国际期货数据/ 宏观指标/ 汇率数据/
+
+- QA_fetch_get_option_list 获取期权列表(郑州商品期权/大连商品期权/上海商品期权/中金所期权/上海股票期权)
+- QA_fetch_get_globalfuture_list 获取国际期货列表(伦敦金属/伦敦石油/纽约商品/纽约石油/芝加哥谷/东京工业品/纽约期货/新加坡期货/马来期货)
+- QA_fetch_get_hkstock_list 获取香港主板/创业板股票
+- QA_fetch_get_hkfund_list  获取香港基金列表
+- QA_fetch_get_hkindex_list 获取香港指数列表
+- QA_fetch_get_usstock_list 获取美股股票列表
+- QA_fetch_get_macroindex_list 获取宏观指数列表
+- QA_fetch_get_exchangerate_list 获取汇率数据(基础汇率/交叉汇率)
+
+- QA_fetch_get_option_day 获取期权(郑州商品期权/大连商品期权/上海商品期权/中金所期权/上海股票期权)日线
+- QA_fetch_get_globalfuture_day 获取国际期货日线(伦敦金属/伦敦石油/纽约商品/纽约石油/芝加哥谷/东京工业品/纽约期货/新加坡期货/马来期货)
+- QA_fetch_get_hkstock_day 获取香港主板/创业板股票日线
+- QA_fetch_get_hkfund_day  获取香港基金日线
+- QA_fetch_get_hkindex_day 获取香港指数日线
+- QA_fetch_get_usstock_day 获取美股股票日线
+- QA_fetch_get_macroindex_day 获取宏观指数日线
+- QA_fetch_get_exchangerate_day 获取汇率数据(基础汇率/交叉汇率)日线
+
+- QA_fetch_get_option_min 获取期权(郑州商品期权/大连商品期权/上海商品期权/中金所期权/上海股票期权)分钟线
+- QA_fetch_get_globalfuture_min 获取国际期货分钟线(伦敦金属/伦敦石油/纽约商品/纽约石油/芝加哥谷/东京工业品/纽约期货/新加坡期货/马来期货)
+- QA_fetch_get_hkstock_min 获取香港主板/创业板股票分钟线
+- QA_fetch_get_hkfund_min  获取香港基金分钟线
+- QA_fetch_get_hkindex_min 获取香港指数分钟线
+- QA_fetch_get_usstock_min 获取美股股票分钟线
+- QA_fetch_get_macroindex_min 获取宏观指数分钟线
+- QA_fetch_get_exchangerate_min 获取汇率数据(基础汇率/交叉汇率)分钟线
+
+8. python3 CTP接口 [WINDOWS/LINUX]
+
+## 1.0.59 
+
+1. 修改了DataStruct的high_limit和low_limit的计算方式
+    - 惰性计算,取消在初始化的时候的计算
+    - 修复了多code的时候的bug
+
+2. 修改了groupby写法, 增加的QADataStruct的groupby参数
+3. 修改了前复权等各种涉及groupby('code')可能报错的情况,改成level层面的操作,以后不会出现warning
+    
+released in : JUNE 27, 2018
 
 
-## 1.0.46 (unreleased)
+## 1.0.58 
+1. QA_Account 增加hold_time属性, 显示持仓时间
+2. 对于QA_Query 的 QA_fetch_financialfiles进行修改, 优化返回结果
+3. QA_DataStruct_Block 修改了get_block方法, 可以获取多个block_name
+4. 修改了financialdicts里面,两个重复的净利润,将现金流量表中的改成netProfitFromOperatingActivities
+5. QA_SU_save_stock_info_tushare加到主函数中
+6. QAAnalysis_Block细微修改,增加__repr__
+7. 文档增加回测和测试账户部分(Documents/)
+8. 增加指数装饰器@QDS_IndexDayWarpper, @QDS_IndexMinWarpper
+9. 更新jupyter的文档(Documents/usejupyter.md)
+10. DataStruct的high_limit和low_limit的bug修复
+11. @喜欢你 更新了mac下的financialfiles存储问题
+
+released in : JUNE 27, 2018
+
+## 1.0.57 
+
+1. 重新修改了依赖项
+released in : JUNE 24, 2018
+
+## 1.0.56 
+1. 优化了 'crawl eastmoney zjlx all' 获取东方财富资金流向的操作，保存到mongodb数据库中
+2. @pchaos 完善了通过配置文件排除ip(某些ip长期BAD RESPONSE),同时补充一个requirements
+3. 实盘易单账户测试完毕
+4. 期货实时tick的接口修复
+5. 数据获取QAFetch的jupyter例子更新(jupyterexample/QAFetch.ipynb)
+6. 修改ORDER_MODEL 中的对应values为 大写
+7. 增加实盘易broker的query_clients方法
+8. 修改了QAWeb的获取数据优先级,避免在无mongodb的时候的```connection timeout```问题
+9. QA_Account 修改了两个函数(```account.get_history(start,end)``` 获取历史成交,```hold_table``` 修改去除0持仓的股票 )
+10. QA_Risk 增加一个property(```risk.daily_market_value```每日总市值)
+11. 优化了Backtest_broker的market_data的判定,加入series的支持
+released in : JUNE 24, 2018
+
+## 1.0.55
+
+优化了save financialfiles 的逻辑
+released in : JUNE 18, 2018
+
+## 1.0.54
+
+优化了save financialfiles 的逻辑
+released in : JUNE 17, 2018
+
+## 1.0.53
+
+优化了save financialfiles 的逻辑
+released in : JUNE 17, 2018
+
+## 1.0.52 
+
+1. @几何提交了 比特币部分的爬虫
+2. QAWEB部分后台增加了基于account_cookie的查询(ip:port/accounts?account_cookie=xxx)
+3. @几何 优化了setup.py文件
+4. 财务数据的存储,获取
+5. QA_fetch_financial_report
+6. QACLI--> save financialfiles
+7. QASU.QA_SU_save_financial_files()
+
+released in : JUNE 17, 2018
+
+## 1.0.51 
+
+1. 增加三个函数到QA主函数中: QA_fetch_get_future_transaction, QA_fetch_get_future_transaction_realtime, QA_fetch_get_future_realtime
+
+released in : JUNE 14, 2018
+
+## 1.0.50 
+1. 添加了获取东方财富个股资金流向保存到sqlite的命令， windows 和 mac 下测试过
+2. crawl eastmoney zjlx 6位股票代码 命令 和获取所有股票资金流向 crawl eastmoney zjlx all 的命令，
+3. 添加了 QUANTAXIS_CRAWLY 目录，一个scrapy的空的项目，后期支持 各种经济新闻，证券报刊信息，热点咨询的获取
+4. QUANTAXIS/QAWeb 用tornado的后台重写
+5. 基于websocket的实时数据推送
+6. 期货历史tick,期货实时数据支持
+
+released in : JUNE 14, 2018
+
+## 1.0.49 
+
+1. @喜欢你 提交了资金流向爬虫(QUANTAXIS CLI/ crawl)
+2. 修复1.0.48-2的引入,使用ImportError错误项
+3. dockerfile更新
+
+released in : JUNE 14, 2018
+
+
+## 1.0.48
+
+1. 修改了QA_Portfolio, 增加init_hold, init_hold_table 字段,可以查看组合的初始化持仓,以及带account的初始化持仓
+2. 修改了QA_Risk的引入, 测试引入import tkinter
+
+released in : JUNE 12, 2018
+
+## 1.0.47
+
+1. 修改了QAMARKET 适配t0回测
+2. 增加t0回测示例
+3. 分钟线撮合不再加一分钟
+4. T0回测买入限额,QA_Account.buy_available
+5. 修改示例,使用随机买卖来测试框架 https://github.com/QUANTAXIS/QUANTAXIS/blob/master/test_backtest/T0backtest.ipynb
+6. 增加对于多个标的的t0账户的支持
+7. 修复一个QA_Account下计算account.trade因为pivot_table默认使用np.mean作为arg_func的bug,该bug会导致在相同时间开了方向相反的仓位,会被计算成平均数
+8. 修复了一个QA_fetch_stock_day_full()中set_index的bug
+
+released in : JUNE 12, 2018
+
+## 1.0.46
 1. 命令行中 添加了 save stock_info_tushare 保存tushare股票列表的信息到数据库中
 2. 修改了实盘易 broker 增加对接
 3. 修改了base_datastruct的 selects,select_time,select_month,get_bar,select_code,增加异常处理(ValueError)
 4. 基于pandas的反馈,使用remove_unused_levels来对索引进行更新
 5. 大幅修改 base_datastruct方法的 select_time_by_gap, splits, add_func方法,优化性能
 6. 增加了一个期货下单接口(QUANTAXIS_trade/WYFFuture)
+7. 成交量复权修正
+8. 实盘易下单对接(单账户)
+9. 删除emoji导致的windows输出不兼容
+10. 增加部分广州ip
+11. 增加一个通达信的成交记录读取接口
+12. 修改存储打印
+13. 修改了分钟线初始化的column请求,使用if in columns来代替
+14. 修改了Backtest内部在获取_quotation时候的dict匹配,使用pd.Timestamp来代替
+15. 修改了threadeng, 使用raise error 报错
+16. 修改了QA_Account/QA_Portfolio的账户初始化过程, init_assets==> init_cash, 新版的init_assets(只读属性)会返回一个dict{'cash':xx,'hold':{}}
+17. 删除了初始化过程中cash/history的输入
+18. QA_Account 增加两个property self.datetime/self.date 均为account运行的时候的实时时间和日期
+19. QA_Account 增加一个close_positions_order 属性, 仅限T0账户使用, 返回一个list,里面都是封装好的QA_Order
+20. 对于QA_Account的T0模式增加一系列适配
+21. 修改一个example,展示T0的使用,更多文档正在补充
+22. QA_RISK 修改了利润的计算模式,以及benchmark的assets(改为从收盘价计算资产)
+23. QA_RISK 增加一个利润构成表 risk.profit_construct
+24. QA_RISK 增加总手续费,总印花税(risk.total_commission,risk.total_tax)
+25. QA_RISK 增加市值表计算(risk.market_value)
+26. 修复了QA_Account的一个计算daily_cash的bug
+
+released in : JUNE 11, 2018
 
 ## 1.0.45 
 
@@ -374,3 +574,5 @@ released in :May 02, 2018
 在偶见的数据库数据重复时,会对数据自动去重并返回结果
 
 released in :Apr 27, 2018
+
+
